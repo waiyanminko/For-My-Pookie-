@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>For My Pookie</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff0f5;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      text-align: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      color: white;
+    }
+    header h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+    section {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem;
+      color: #ff4b5c;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    /* Countdown */
+    .countdowns {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .timer {
+      background: white;
+      padding: 1rem 2rem;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      text-align: center;
+      min-width: 200px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .timer:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    /* Timeline (vertical) */
+    .timeline {
+      position: relative;
+      margin: 2rem 0;
+      padding-left: 2rem;
+      border-left: 3px solid #ff9a9e;
+    }
+    .timeline-item {
+      margin-bottom: 1.5rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .timeline-item:hover {
+      transform: scale(1.02);
+    }
+    .timeline-item h3 {
+      margin: 0.2rem 0;
+      color: #ff4b5c;
+    }
+
+    /* Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+      gap: 1rem;
+    }
+    .gallery-item {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+    .gallery-item:hover {
+      transform: translateY(-5px);
+    }
+    .gallery-item img {
+      width: 100%;
+      display: block;
+    }
+    .gallery-item p {
+      padding: 0.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background: rgba(0,0,0,0.8);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:1000;
+    }
+    .lightbox img {
+      max-width:90%;
+      max-height:80%;
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    }
+
+    /* Favorites */
+    .favorites ul {
+      list-style: none;
+      padding: 0;
+    }
+    .favorites li {
+      background: white;
+      margin: 0.5rem 0;
+      padding: 0.7rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: background 0.3s, transform 0.3s;
+    }
+    .favorites li:hover {
+      background: #ffe5ec;
+      transform: scale(1.02);
+    }
+
+    /* Messages */
+    .messages {
+      background: white;
+      padding: 1rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .messages form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .messages input, .messages textarea, .messages button {
+      padding: 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+    }
+    .messages input:focus, .messages textarea:focus {
+      outline: none;
+      border-color: #ff9a9e;
+      box-shadow: 0 0 5px #ffb3c6;
+    }
+    .messages button {
+      background: #ff4b5c;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .messages button:hover {
+      background: #e63946;
+      transform: translateY(-2px);
+    }
+    .message-list {
+      margin-top: 1rem;
+    }
+    .message-item {
+      background: #ffe5ec;
+      padding: 0.7rem;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .message-item strong {
+      color: #ff4b5c;
+    }
+    .message-item small {
+      display: block;
+      text-align: right;
+      font-size: 0.75rem;
+      color: #666;
+    }
+
+    /* LOVE QUOTES */
+    .quotes {
+      text-align: center;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: linear-gradient(135deg, #ffd6e0, #ffe5ec);
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      max-width: 700px;
+    }
+    .quote-box {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    #quote-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      color: #ff4b5c;
+      margin-bottom: 1rem;
+    }
+    #new-quote {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      background: #ff4b5c;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+    }
+    #new-quote:hover {
+      background: #e63946;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>For My Pookie</h1>
+    <p>Please know that I love you more than anything 
+    (HayMarn)</p>
+  </header>
+
+<section>
+  <h2>Countdowns</h2>
+  <div class="countdowns">
+    <div class="timer">
+      <h3>Birthday 🎂</h3>
+      <p id="birthday-timer">24-12-2010</p>
+    </div>
+    <div class="timer">
+      <h3>Anniversary 💍</h3>
+      <p id="anniversary-timer">1-8-2024</p>
+    </div>
+  </div>
+</section>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section>
+    <h2>Our Story 📖</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h3>ရင်ထဲကခံစားချက်</h3>
+        <p>အချစ်ခံချင်လားလို့မေးရင် အချစ်ခံချင်ပါတယ်။ 
+ဘာလို့လဲဆိုရင် ဂရုစိုက်ပေးတာမျိုးဆို 
+အရမ်းသဘောကျတယ်။ 
+အသေးအဖွဲကအစ အရိပ်တကြည့်ကြည့်နဲ့ 
+ချစ်ပေးတာမျိုးဆို အရမ်းသဘောကျတယ်။ 
+မညာပါဘူး တန်ဖိုးထားခံချင်တယ် 
+နောက်ပြီး တကယ်ကို အချစ်ခံချင်ပါတယ်။</p>
+      </div>
+      <div class="timeline-item">
+        <h3>❤️</h3>
+        <p>အခြားသူတွေ စိတ်ကို နားမလည်ချင်လို့ လူတွေနဲ့
+ဝေးဝေးနေခဲ့ပေမယ့် မင်းစိတ်ကိုတော့ နားလည်ချင်တယ် အရိပ်တကြည့်ကြည့်ပေါ့ မျက်ခုံးပင့်တာ နှုတ်ခမ်းကွေးတာ ဘာကြောင့် စိတ်မကြည်တာ ဘာကြောင့် ပြုံးရယ်နေတာ အကုန်သိချင်ခဲ့တယ် အချစ်ရယ် မင်းကိုငါ အမြဲပြောဖူးပါတယ်" မင်းကို ချစ်တယ်ဆိုတာ မင်းသိထားတာထက် ပိုပါတယ်လို့" 🤍🌻</p>
+      </div>
+      <div class="timeline-item">
+        <h3>လက်ဖက်ရည်ခွက်</h3>
+        <p>နှုတ်ခမ်းပဲ့ချင်ပဲ့ပါစေ
+လက်ဖက်ရည် မဖိတ်ပါ‌စေနဲ့
+
+ဘယ်ကောင်တွေ နှုတ်ခမ်းနဲ့ စုပ်ဖူးလဲ မတွေးဘူး
+ဘယ်လောက်များများ ကိုင်တွယ်ဖူးလဲ မမေးဘူး
+ဘယ်လိုဆေးကြောထားလဲ အရေးကြီးတယ်
+
+လက်ဖက်ရည်ခွက်အပေါ် သဘောထားကြီးသလိုမျိုး
+မင်းကိုငါချစ်ပါတယ်။</p>
+      </div>
+      <div class="timeline-item">
+        <h3>တစ်ချိန်"ကျရင်ပေါ့</h3>
+        <p>မနက်၃နာရီလောက်ကြီး ကျနော်နိုးလာပြီး
+ပြန်အိပ်မရလို့ ဘေးကိုကြည့်လိုက်တဲ့အခါ
+ခင်ဗျားရှိနေမယ်၊
+ကျနော့်ဘေးမှာ နှစ်နှစ်ခြိုက်ခြိုက်အိပ်ပျော်နေလိမ့်မယ်
+အဲဒီအချိန်ကျရင် ကမ္ဘာကြီးဟာ
+ထင်သလောက်လည်း အထီးကျန်မဆန်ပါလားလို့
+ကျနော်တွေးရင်း ကျေနပ်နေမိမှာပဲ</p>
+      </div>
+      <div class="timeline-item">
+        <h3>🐿️❤️‍🔥</h3>
+        <p>အနားက ထွက်မသွားစေချင်ရုံပဲ ။
+ဘာတွေပဲဖြစ်ဖြစ် လက်ကိုလွှတ်မပေးလိုက်ရုံပဲ ။
+သိပ်ဝမ်းနည်းလာတဲ့အခါ ဖက်ထားပေးရုံပဲ။
+"ဘာမှမဖြစ်ဘူးနော် အနားမှာ အတူရှိနေမယ်"ဆိုတဲ့
+စကားလေး ကြားချင်ရုံပဲ ။ မရှိမဖြစ် လိုအပ်လို့ပါ။ 
+</p>
+      </div>
+      <div class="timeline-item">
+        <h3>ပန်း🌹</h3>
+        <p>တစ်ခါလွမ်းလို့
+တစ်ပွင့် ပွင့်မယ်ဆိုရင်
+တစ်လောကလုံး
+ပန်းတွေနဲ့ဖုံးသွားလိမ့်မယ် ။</p>
+      </div>
+      <div class="timeline-item">
+        <h3>ပြောရတဲ့အကြောင်း</h3>
+        <p>ဘာလို့ချစ်တယ်လို့ ခဏခဏပြောတာလဲဆိုရင်
+ဘာမဆိုဖြစ်သွားနိုင်တဲ့ အခြေနေချည်းပဲမို့ပေါ့
+အချစ်ရယ်
+ကမ္ဘာကြီးကိုရောမင်းကိုရော
+ဘယ်အရာကိုမှမပိုင်စိုးနိုင်တာပဲ ။</p>
+      </div>
+      <div class="timeline-item">
+        <h3>💋</h3>
+        <p>"တွေ့ဆုံကြုံကွဲပါ "ဆိုတဲ့လောကရဲ့
+သဘောသဘာဝကြီးထဲ မင်းနဲ့ အတူတူရှိခွင့်ရတဲ့
+အချိန်ကာလလေးတွေကို ဆွဲဆန့်လို့ထားချင်တယ်။
+အချိန်အကြာကြီးအထိ အတူတူ
+ရှင်သန်ဖြတ်သန်းချင်တယ် ။နောက်ဆုံးသော
+အချိန်အထိ ကိုယ့်ရဲ့အနားမှာ မင်းကို
+ခေါ်ထားချင်တယ်။ တကယ်လို့များ
+ခွဲခွာရခြင်းတွေ ရှိလာတဲ့အခါမှာလည်း
+ကောင်းတဲ့ အမှတ်တရလေးအဖြစ်နဲ့
+ဆက်ပြီး သိမ်းထားချင်တယ် ။</p>
+      </div>
+   
+      
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section>
+    <h2>Photo Gallery 📸</h2>
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="Slide1.jpg" alt="memory">
+        <p>သူရဲ့အကြိုက်ဆုံးပန်းလေးပေါ့❤️‍🔥</p>
+      </div>
+    
+      <div class="gallery-item">
+        <img src="marn0.jpg" >
+        <p>ဒါလေးရောဘဲသူကြိုက်မှန်းသိလို့တွေ့တိုင်းရိုက်ဖစ်တာလေး</p>
+      </div>
+      <div class="gallery-item">
+        <img src="marn1.jpg" alt="memory">
+        <p>ဒီပုံလေးကသူရှေ့ဘက်ရောက်တော့ရိုက်ပြီးပို့ထားတာလေး❤️‍🔥</p>
+      </div
+      <div class="gallery-item">
+  <img src="marn2.jpg" alt="memory">
+  <p>ဘယ်လိုနေ"ချစ်စရာလေးပါ❤️‍🔥</p>
+</div>
+<div class="gallery-item">
+  <img src="marn3.jpg" alt="memory">
+  <p>ဒါလေးကမန္တလေးမှာတုံးက🌹</p>
+</div>
+<div class="gallery-item">
+  <img src="marn4.jpg" alt="memory">
+  <p>ဒါလေးကတော့ကျွန်တော်နဲ့မတွေ့ခင်တုံးကပေါ့ဗျာ</p>
+</div>
+<div class="gallery-item">
+  <img src="marn8.jpg" alt="memory">
+  <p>Sweet selfie 💕</p>
+</div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <img src="" alt="preview">
+  </div>
+
+  <!-- FAVORITES -->
+  <section class="favorites">
+    <h2> Our Dream 🌟</h2>
+    <ul>
+      <li>We will get married when we are strong and complete
+      <li>Pyin Oo Lwin မှာနေကြမယ်</li>
+      <li>ခွေးလေးတစ်ကောင်မွေးမယ်
+      <li>သမီးလေးတစ်ယောက်ဘံ</li>
+    </ul>
+  </section>
+
+  <!-- MESSAGES -->
+  <section class="messages">
+    <h2>Message Box 💌</h2>
+    <form id="messageForm">
+      <input type="text" id="title" placeholder="Title" required>
+      <textarea id="content" placeholder="Write a message..." required></textarea>
+      <button type="submit">Send</button>
+    </form>
+    <div class="message-list" id="messageList"></div>
+  </section>
+
+  <!-- LOVE QUOTES -->
+  <section class="quotes">
+    <h2>Love Quotes ❤️</h2>
+    <div class="quote-box">
+      <p id="quote-text">Loading...</p>
+      <button id="new-quote">Next Quote ➡️</button>
+    </div>
+  </section>
+
+ <script>
+  
+
+  // MESSAGE BOX with localStorage
+  const form = document.getElementById("messageForm");
+  const list = document.getElementById("messageList");
+
+  function loadMessages() {
+    list.innerHTML = "";
+    const messages = JSON.parse(localStorage.getItem("messages")) || [];
+    messages.forEach(msg => {
+      const div = document.createElement("div");
+      div.className = "message-item";
+      div.innerHTML = `<strong>${msg.title}</strong><p>${msg.content}</p><small>${msg.date}</small>`;
+      list.appendChild(div);
+    });
+  }
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const title = document.getElementById("title").value;
+    const content = document.getElementById("content").value;
+    const now = new Date();
+    const msg = { title, content, date: now.toLocaleString() };
+    const messages = JSON.parse(localStorage.getItem("messages")) || [];
+    messages.unshift(msg);
+    localStorage.setItem("messages", JSON.stringify(messages));
+    form.reset();
+    loadMessages();
+  });
+  loadMessages();
+
+  // LIGHTBOX
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = lightbox.querySelector('img');
+  const galleryImgs = document.querySelectorAll('.gallery-item img');
+
+  galleryImgs.forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightbox.style.display = 'flex';
+    });
+  });
+  lightbox.addEventListener('click', () => {
+    lightbox.style.display = 'none';
+  });
+
+  // LOVE QUOTES Auto Rotate + Next Button + localStorage
+  const quotes = [
+    "You are my today and all of my tomorrows. ",
+    "Every love story is beautiful, but ours is my favorite. 🌹",
+    "You make my heart smile. 😊",
+    "I love you more than I have ever found a way to say to you. 💖",
+    "In your smile, I see something more beautiful than the stars. ✨",
+    "Forever is not long enough with you. 💍"
+  ];
+
+  const quoteText = document.getElementById("quote-text");
+  const newQuoteBtn = document.getElementById("new-quote");
+
+  function showQuote(quote) {
+    quoteText.textContent = quote;
+    localStorage.setItem("lastQuote", quote);
+  }
+
+  function showRandomQuote() {
+    let randomIndex;
+    let lastQuote = quoteText.textContent;
+    do {
+      randomIndex = Math.floor(Math.random() * quotes.length);
+    } while(quotes[randomIndex] === lastQuote && quotes.length > 1);
+    showQuote(quotes[randomIndex]);
+  }
+
+  newQuoteBtn.addEventListener("click", showRandomQuote);
+
+  // Load last quote from localStorage
+  const savedQuote = localStorage.getItem("lastQuote");
+  if(savedQuote) {
+    quoteText.textContent = savedQuote;
+  } else {
+    showRandomQuote();
+  }
+
+  // Auto rotate every 5 seconds
+  setInterval(showRandomQuote, 5000);
+</script>
